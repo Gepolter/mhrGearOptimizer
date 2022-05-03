@@ -1,5 +1,6 @@
 package UI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.text.JTextComponent;
 import gearFamily.Armor;
 import gearFamily.Weapon;
@@ -38,7 +40,7 @@ public class BuildDisplayPanel extends JPanel{
 	private ArrayList<ArrayList<JPanel>> grid;
 	private GridBagLayout gbLayout;
 	private final static Insets insets = new Insets(2, 2, 0, 0);
-	
+	//gaps not used. Gridbad padX, padY used instead
 	private int vGap;
 	private int hGap;
 	
@@ -58,8 +60,7 @@ public class BuildDisplayPanel extends JPanel{
 		xAxis = 9;
 		//prev 25
 		yAxis = 25;
-		vGap = 1;
-		hGap = 1;
+		
 		defaultSize = new Dimension(70, 20);
 		firstColSize = new Dimension(100,20);
 		secondColSize = new Dimension(20,20);
@@ -80,17 +81,20 @@ public class BuildDisplayPanel extends JPanel{
 			for(int j = 0; j < xAxis; j++) {
 				//create JPanel and configure default size, etc.  //also create and save reference in arraylist
 				this.grid.get(i).add(new JPanel());
+				this.grid.get(i).get(j).setLayout(new BorderLayout());
 				
 				this.grid.get(i).get(j).setBackground(Color.BLACK);
+				
  
 				//needs both size methods to work
 				//first column size
 				if(j == 0) {
-					this.grid.get(i).get(j).setPreferredSize(firstColSize);
-					this.grid.get(i).get(j).setMinimumSize(firstColSize);
+					//this.grid.get(i).get(j).setPreferredSize(firstColSize);
+					//this.grid.get(i).get(j).setMinimumSize(firstColSize);
 				}else if(j == 1) {
-					this.grid.get(i).get(j).setPreferredSize(secondColSize);
-					this.grid.get(i).get(j).setMinimumSize(secondColSize);
+					
+					//this.grid.get(i).get(j).setPreferredSize(secondColSize);
+					//this.grid.get(i).get(j).setMinimumSize(secondColSize);
 				}else {
 					this.grid.get(i).get(j).setPreferredSize(defaultSize);
 					this.grid.get(i).get(j).setMinimumSize(defaultSize);					
@@ -100,7 +104,8 @@ public class BuildDisplayPanel extends JPanel{
 				this.addComponent(this.grid.get(i).get(j), j, i, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
 			}
 		}
-
+		this.changeColumnWidth(0, firstColSize);
+		this.changeColumnWidth(1, secondColSize);
 		
 		
 		//2 header lines
@@ -153,8 +158,8 @@ public class BuildDisplayPanel extends JPanel{
 		};
 		
 		JLabel contentLabel = new JLabel(new ImageIcon(image1.getScaledInstance(20, 20, Image.SCALE_SMOOTH)), JLabel.LEFT);
-		
-				
+		contentLabel.setVerticalAlignment(SwingConstants.CENTER);
+		contentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		//resize label column if new content exceeds current size		
 		this.grid.get(y).get(x).add(contentLabel);
@@ -182,22 +187,38 @@ public class BuildDisplayPanel extends JPanel{
 		contentLabel.setFont(buildPanelFont);
 		
 		contentLabel.setForeground(Color.WHITE);
-		//contentLabel.setVerticalAlignment(SwingConstants.TOP);
+		contentLabel.setVerticalAlignment(SwingConstants.CENTER);
+		contentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		//resize label column if new content exceeds current size		
-		this.grid.get(y).get(x).add(contentLabel);
-		//not checking preffered label size correctly. everything returns true
-		if(contentLabel.getPreferredSize().getWidth() > this.grid.get(y).get(x).getSize().getWidth()) {
-				
-			contentLabel.setMinimumSize(contentLabel.getPreferredSize());
-			
-			this.grid.get(y).get(x).setPreferredSize(contentLabel.getMinimumSize());			
-			this.grid.get(y).get(x).setMinimumSize(contentLabel.getMinimumSize());
-		}else {
-			
-			contentLabel.setMinimumSize(this.grid.get(y).get(x).getMinimumSize());
+		if(containsNumeric(content)) {
+			this.grid.get(y).get(x).setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY), BorderFactory.createLoweredBevelBorder()));
 		}
 		
+		//contentLabel.setAlignmentY(TOP_ALIGNMENT);
+		
+		//resize label column if new content exceeds current size		
+		
+		//this.grid.get(y).get(x).setAlignmentY(TOP_ALIGNMENT);
+		
+		//check for size and 0, bc the preferredSize of Labels seems to initialize when beeing drawn. seems weird though.
+		//add buffer 
+		int buffer = 10;
+		if(contentLabel.getPreferredSize().getWidth() + 10 > this.grid.get(y).get(x).getSize().getWidth() && this.grid.get(y).get(x).getSize().getWidth() != 0) {
+			
+			Dimension bufferedDim = new Dimension((int) contentLabel.getPreferredSize().getWidth() + 10, 20/*(int)contentLabel.getPreferredSize().getHeight() + 10*/);
+			contentLabel.setMinimumSize(bufferedDim);
+			
+			//this.grid.get(y).get(x).setPreferredSize(contentLabel.getMinimumSize());			
+			//this.grid.get(y).get(x).setMinimumSize(contentLabel.getMinimumSize());
+			this.changeColumnWidth(x, bufferedDim);
+			
+			
+		}else {
+			contentLabel.setMinimumSize(this.grid.get(y).get(x).getMinimumSize());
+			
+		}
+		
+		this.grid.get(y).get(x).add(contentLabel, BorderLayout.CENTER);
 		
 		this.grid.get(y).get(x).repaint();
 		
@@ -274,12 +295,36 @@ public class BuildDisplayPanel extends JPanel{
 	public void clearGrid() {
 		for(int i = 2; i < this.grid.size(); i++) {
 			for(int j = 0; j < this.grid.get(i).size(); j++) {
+				this.grid.get(i).get(j).setBorder(null);
 				if(this.grid.get(i).get(j).getComponentCount() != 0) {
 					for(Component a : this.grid.get(i).get(j).getComponents()) {
 						this.grid.get(i).get(j).remove(a);
 					}	
 				}
 			}
+		}
+	}
+	public boolean containsNumeric(String str) {
+		if(str.matches(".*\\d.*")) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isNumeric (String str) {
+		try {
+			Integer.parseInt(str);
+			return true;
+		} catch(NumberFormatException e) {
+			return false;
+		}	
+	}
+	
+	public void changeColumnWidth(int x, Dimension d) {
+		for(int i = 0; i < this.yAxis; i++) {
+			this.grid.get(i).get(x).setPreferredSize(d);
+			this.grid.get(i).get(x).setMinimumSize(d);
+
 		}
 	}
 }

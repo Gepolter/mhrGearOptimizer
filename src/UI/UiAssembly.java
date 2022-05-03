@@ -75,7 +75,7 @@ public class UiAssembly {
 		
 		//Components
 		wtPanel = new WpnTalPanel(allWpnNames, mhFont, allSkillNames, allSkill, armorPools);
-		baseFrame.addComponent(wtPanel, 0, 0, 2, 1, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL);
+		baseFrame.addComponentHeavyX(wtPanel, 0, 0, 2, 1, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL);
 
 		String[] selectedTalNames = new String[9];
 		bDispPanel = new BuildDisplayPanel(allWpnNames, allArmorNames, selectedTalNames, mhFont);
@@ -95,9 +95,6 @@ public class UiAssembly {
 		mainPane.getVerticalScrollBar().setMaximumSize(dPane);
 		
 		mainPane.setBorder(null);
-		//mainPane.setBorder(BorderFactory.createEtchedBorder());
-		//mainPane.setBackground(Color.DARK_GRAY);
-		//mainPane.setForeground(Color.DARK_GRAY);
 		mainPane.getVerticalScrollBar().setBackground(Color.DARK_GRAY);
 		mainPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 			@Override
@@ -111,17 +108,16 @@ public class UiAssembly {
 		
 		
 		//TODO new panel for choice/clear of Wlists, gearpool and confirm
-		bop = new BuildOptionsPanel(mhFont, armorPools, this, configPanelWl, configPanelTal, chosenWpn, bDispPanel);
-		baseFrame.addComponent(bop, 0, 2, 2, 1, GridBagConstraints.NORTH, GridBagConstraints.BOTH);
-		
+		bop = new BuildOptionsPanel(mhFont, armorPools, this, configPanelWl, configPanelTal, chosenWpn, bDispPanel, baseFrame);
+		baseFrame.addComponentHeavyX(bop, 0, 2, 2, 1, GridBagConstraints.NORTH, GridBagConstraints.BOTH);
 		
 		String optionStr = "wl";
 		configPanelWl = new ConfigurationPanel(allSkillNames, allSkill, bop, mhFont, optionStr);
-		baseFrame.addComponentHeavyX(configPanelWl, 2, 0, 1, 3, GridBagConstraints.WEST, GridBagConstraints.BOTH);
+		baseFrame.addComponent(configPanelWl, 2, 0, 1, 3, GridBagConstraints.EAST, GridBagConstraints.VERTICAL);
 		
 		optionStr = "tal";
 		configPanelTal = new ConfigurationPanel(allSkillNames, allSkill, bop, mhFont, optionStr);
-		baseFrame.addComponentHeavyX(configPanelTal, 3, 0, 1, 3, GridBagConstraints.WEST, GridBagConstraints.BOTH);
+		baseFrame.addComponent(configPanelTal, 3, 0, 1, 3, GridBagConstraints.EAST, GridBagConstraints.VERTICAL);
 		
 		bop.setWlConfigPanel(configPanelWl);
 		bop.setTalConfigPanel(configPanelTal);

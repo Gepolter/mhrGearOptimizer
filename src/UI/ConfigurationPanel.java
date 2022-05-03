@@ -81,10 +81,13 @@ public class ConfigurationPanel extends JPanel{
 	//passing Obj to:
 	private BuildOptionsPanel bop;
 	
-	//second constructor for tal panel
+	private int wlWidth = 240;
+	private int talWidth = 220;
+	
+	//one constructor for tal and wl panels. Differences filtered with if stmnts
 	public ConfigurationPanel (String[] allSkillNames, Skill[] allSkill, BuildOptionsPanel bop, Font panelFont, String optionStr) {
 		this.setOptionStr(optionStr);
-		Border blackline = BorderFactory.createEtchedBorder();
+		Border blackline = BorderFactory.createEtchedBorder(Color.GREEN, Color.BLUE);
 		this.setBorder(blackline);
 		
 		if(optionStr == "wl") {
@@ -105,8 +108,8 @@ public class ConfigurationPanel extends JPanel{
 			//Layout
 			this.bLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 			this.setLayout(bLayout);
-			Dimension d = new Dimension(240, Integer.MAX_VALUE);
-			int width = 240;
+			//int width = 240;
+			Dimension d = new Dimension(wlWidth, Integer.MAX_VALUE);
 			
 			this.setPreferredSize(d);
 			this.setMaximumSize(d);
@@ -122,9 +125,9 @@ public class ConfigurationPanel extends JPanel{
 			headerPanel.setBackground(Color.DARK_GRAY);
 			headerPanel.setAlignmentX(LEFT_ALIGNMENT);
 			headerPanel.setAlignmentY(TOP_ALIGNMENT);	
-			headerPanel.setPreferredSize(new Dimension(width, 40));
-			headerPanel.setMinimumSize(new Dimension(width, 40));		
-			headerPanel.setMaximumSize(new Dimension(width, 40));
+			headerPanel.setPreferredSize(new Dimension(wlWidth, 40));
+			headerPanel.setMinimumSize(new Dimension(wlWidth, 40));		
+			headerPanel.setMaximumSize(new Dimension(wlWidth, 40));
 			headerPanel.setBorder(blackline);
 			
 			JLabel header = new JLabel("Wishlist Creation", JLabel.LEFT);
@@ -143,7 +146,7 @@ public class ConfigurationPanel extends JPanel{
 			this.overviewPanel.setBackground(Color.DARK_GRAY);
 			this.overviewPanel.setAlignmentX(LEFT_ALIGNMENT);
 			this.overviewPanel.setAlignmentY(TOP_ALIGNMENT);
-			this.overviewPanel.setMaximumSize(new Dimension(width, Integer.MAX_VALUE));
+			this.overviewPanel.setMaximumSize(new Dimension(wlWidth, Integer.MAX_VALUE));
 			this.overviewPanel.setBorder(blackline);
 			
 			this.add(overviewPanel);
@@ -165,8 +168,8 @@ public class ConfigurationPanel extends JPanel{
 			wlConfirmBtn.setForeground(Color.WHITE);
 			wlConfirmBtn.setAlignmentX(LEFT_ALIGNMENT);
 			wlConfirmBtn.setAlignmentY(TOP_ALIGNMENT);
-			wlConfirmBtn.setPreferredSize(new Dimension(width, 20));			
-			wlConfirmBtn.setMaximumSize(new Dimension(width, 20));
+			wlConfirmBtn.setPreferredSize(new Dimension(wlWidth, 20));			
+			wlConfirmBtn.setMaximumSize(new Dimension(wlWidth, 20));
 			wlConfirmBtn.addActionListener(wlListener);
 			Border eBorder = BorderFactory.createEtchedBorder();
 			wlConfirmBtn.setBorder(eBorder);
@@ -192,8 +195,8 @@ public class ConfigurationPanel extends JPanel{
 			//Layout
 			this.bLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 			this.setLayout(bLayout);
-			int width = 220;
-			Dimension d = new Dimension(width, Integer.MAX_VALUE);
+			
+			Dimension d = new Dimension(talWidth, Integer.MAX_VALUE);
 			//this.setPreferredSize(d);
 			//this.setMinimumSize(d);
 			this.setPreferredSize(d);
@@ -210,9 +213,9 @@ public class ConfigurationPanel extends JPanel{
 			headerPanel.setBackground(Color.DARK_GRAY);
 			headerPanel.setAlignmentX(LEFT_ALIGNMENT);
 			headerPanel.setAlignmentY(TOP_ALIGNMENT);
-			headerPanel.setPreferredSize(new Dimension(width, 40));
-			headerPanel.setMinimumSize(new Dimension(width, 40));
-			headerPanel.setMaximumSize(new Dimension(width, 40));
+			headerPanel.setPreferredSize(new Dimension(talWidth, 40));
+			headerPanel.setMinimumSize(new Dimension(talWidth, 40));
+			headerPanel.setMaximumSize(new Dimension(talWidth, 40));
 			headerPanel.setBorder(blackline);
 			
 			JLabel header = new JLabel("Talisman Creation", JLabel.LEFT);
@@ -231,7 +234,7 @@ public class ConfigurationPanel extends JPanel{
 			this.overviewPanel.setBackground(Color.DARK_GRAY);
 			this.overviewPanel.setAlignmentX(LEFT_ALIGNMENT);
 			this.overviewPanel.setAlignmentY(TOP_ALIGNMENT);
-			this.overviewPanel.setMaximumSize(new Dimension(width, Integer.MAX_VALUE));
+			this.overviewPanel.setMaximumSize(new Dimension(talWidth, Integer.MAX_VALUE));
 			this.overviewPanel.setBorder(blackline);
 			
 			this.add(overviewPanel);
@@ -254,7 +257,7 @@ public class ConfigurationPanel extends JPanel{
 			wlConfirmBtn.setForeground(Color.WHITE);
 			wlConfirmBtn.setAlignmentX(LEFT_ALIGNMENT);
 			wlConfirmBtn.setAlignmentY(TOP_ALIGNMENT);
-			wlConfirmBtn.setMaximumSize(new Dimension(width, 20));
+			wlConfirmBtn.setMaximumSize(new Dimension(talWidth, 20));
 			wlConfirmBtn.addActionListener(wlListener);
 			Border eBorder = BorderFactory.createEtchedBorder();
 			wlConfirmBtn.setBorder(eBorder);
@@ -349,7 +352,8 @@ public class ConfigurationPanel extends JPanel{
 		this.deselectCollapsiblePanels();
 		
 		CollapsiblePanel i = new CollapsiblePanel("WL " + (this.collapsiblePanelList.size() + 1), this.panelFont, this);
-		i.addcHeader(new OverviewSet(this.getOptionStr()));		
+		i.addcHeader(new OverviewSet(this.getOptionStr()));	
+		i.getcHeader().setPreferredSize(new Dimension(wlWidth, 45));
 		collapsiblePanelList.add(i);
 		//add corresponding overview list to each configPanel
 		this.overviewSetList.add(new ArrayList<OverviewSet>());
@@ -364,10 +368,12 @@ public class ConfigurationPanel extends JPanel{
 		i.addcHeader(btnPanel);
 		//list for every collapsible panel to store buttons
 		this.SlotLvlPanelList.add(btnPanel);
-		
-		
+				
 		i.addcHeader(new OverviewSet(this.getOptionStr()));		
 		collapsiblePanelList.add(i);
+		
+		//TODO resize width
+		i.getcHeader().setPreferredSize(new Dimension(wlWidth, 100));
 		//add corresponding overview stack to each configPanel
 		this.overviewSetList.add(new ArrayList<OverviewSet>());
 		this.overviewPanel.add(i);
@@ -505,8 +511,8 @@ public class ConfigurationPanel extends JPanel{
 			
 			
 			//TODO track state of buttons somewhere
-			
-			this.setMaximumSize(new Dimension(230, 30));
+			this.setPreferredSize(new Dimension(talWidth, Integer.MAX_VALUE));			
+			this.setMaximumSize(new Dimension(talWidth, Integer.MAX_VALUE));
 			
 			Border blackline = BorderFactory.createEtchedBorder();	
 			
@@ -627,9 +633,10 @@ public class ConfigurationPanel extends JPanel{
 				prioColumn.setFont(panelFont);
 				prioColumn.setAlignmentX(CENTER_ALIGNMENT);
 				prioColumn.setAlignmentY(CENTER_ALIGNMENT);
-				prioColumn.setPreferredSize(new Dimension(25, 30));
-				prioColumn.setMaximumSize(new Dimension(25, 30));
-				prioColumn.setMinimumSize(new Dimension(25, 30));
+				Dimension prioD = new Dimension(20,30);
+				prioColumn.setPreferredSize(prioD);
+				prioColumn.setMaximumSize(prioD);
+				prioColumn.setMinimumSize(prioD);
 
 				this.add(prioColumn);
 			}
@@ -651,38 +658,43 @@ public class ConfigurationPanel extends JPanel{
 			lvlColumn.setFont(panelFont);
 			lvlColumn.setAlignmentX(CENTER_ALIGNMENT);
 			lvlColumn.setAlignmentY(CENTER_ALIGNMENT);
-			lvlColumn.setPreferredSize(new Dimension(25, 30));
-			lvlColumn.setMinimumSize(new Dimension(25, 30));
-			lvlColumn.setMaximumSize(new Dimension(25, 30));
+			Dimension prioD = new Dimension(20,30);
+			lvlColumn.setPreferredSize(prioD);
+			lvlColumn.setMinimumSize(prioD);
+			lvlColumn.setMaximumSize(prioD);
 			
 			
 			this.add(lvlColumn);	
 			
 			//JButton clear
-			JButton clear = new JButton("x");
+			JButton clear = new JButton();
+			//clear.setFont(panelFont.deriveFont((float)20));
+			clear.setText("x");
 			clear.setAlignmentX(RIGHT_ALIGNMENT);
 			clear.setAlignmentY(TOP_ALIGNMENT);
 			clear.setFont(panelFont);
 			clear.setForeground(Color.WHITE);
 			clear.setBackground(Color.DARK_GRAY);
 			
-			clear.setPreferredSize(new Dimension(40 ,25));
-			clear.setMinimumSize(new Dimension(40 ,25));		
-			clear.setMaximumSize(new Dimension(40 ,25));
+			Dimension btnDim = new Dimension(40,25);
+			clear.setPreferredSize(btnDim);
+			clear.setMinimumSize(btnDim);		
+			clear.setMaximumSize(btnDim);
 			clear.addActionListener(ovListener);
 			this.add(clear);
 			
 			//space for scrollbar
-			this.add(Box.createHorizontalStrut(15));
+			//this.add(Box.createHorizontalStrut(15));
 			
 			this.revalidate();
 			
 			if (this.optionStr =="wl") {
-				this.add(Box.createHorizontalStrut(55));				
-			
-				this.setPreferredSize(new Dimension(230, 40));
-				this.setMinimumSize(new Dimension(230, 40));			
-				this.setMaximumSize(new Dimension(230, 40));
+				//what is this doing...?
+				//this.add(Box.createHorizontalStrut(55));				
+				int width = wlWidth-35;
+				this.setPreferredSize(new Dimension(width, 40));
+				this.setMinimumSize(new Dimension(width, 40));			
+				this.setMaximumSize(new Dimension(width, 40));
 			}else if(this.optionStr == "tal") {
 				this.setPreferredSize(new Dimension(185, 40));
 				this.setMinimumSize(new Dimension(185, 40));			
@@ -733,17 +745,17 @@ public class ConfigurationPanel extends JPanel{
 			this.add(lvlColumn);
 			
 			if (this.optionStr =="wl") {
-				this.add(Box.createHorizontalStrut(55));				
-			
-				this.setPreferredSize(new Dimension(230, 40));
-				this.setMinimumSize(new Dimension(230, 40));			
-				this.setMaximumSize(new Dimension(230, 40));
+				//this.add(Box.createHorizontalStrut(55));				
+				Dimension wlD = new Dimension(185,40);
+				this.setPreferredSize(wlD);
+				this.setMinimumSize(wlD);			
+				this.setMaximumSize(wlD);
 			}else if(this.optionStr == "tal") {
 				this.setPreferredSize(new Dimension(185, 40));
 				this.setMinimumSize(new Dimension(185, 40));			
 				this.setMaximumSize(new Dimension(185, 40));
 			}
-				
+			
 		}
 		//overview methods
 		
@@ -821,15 +833,15 @@ public class ConfigurationPanel extends JPanel{
 			skillSelectionBox.setForeground(Color.BLACK);
 			skillSelectionBox.setBackground(Color.WHITE);
 			skillSelectionBox.setFont(panelFont);
-			Dimension dropDownBoxSize = new Dimension((int) this.configPanel.getPreferredSize().getWidth(), 120);
+			Dimension dropDownBoxSize = new Dimension((int) this.configPanel.getPreferredSize().getWidth(), 15);
+			//THIS does it
+			editor.setPreferredSize(dropDownBoxSize);
+			editor.setMaximumSize(dropDownBoxSize);
 			
 			
+			//skillSelectionBox.setPreferredSize(dropDownBoxSize);
+			//skillSelectionBox.setMaximumSize(dropDownBoxSize);
 			
-			this.skillSelectionBox.setPreferredSize(dropDownBoxSize);
-			skillSelectionBox.setMaximumSize(dropDownBoxSize);
-			
-			//skillSelectionBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
-			//skillSelectionBox.setPreferredSize(this.getPreferredSize());
 			skillSelectionBox.setAlignmentX(LEFT_ALIGNMENT);
 			skillSelectionBox.setAlignmentY(TOP_ALIGNMENT);
 			

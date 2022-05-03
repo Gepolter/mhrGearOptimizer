@@ -8,6 +8,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
@@ -68,8 +69,9 @@ public class BuildOptionsPanel extends JPanel{
 	private ConfigurationPanel wlConfigPanel;
 	private ConfigurationPanel talConfigPanel;
 	private BuildDisplayPanel displayPanel;
+	private JFrame parentFrame;
 	
-	public BuildOptionsPanel(Font mhFont, String[] armorpools, UiAssembly uiA, ConfigurationPanel wlConfigPanel, ConfigurationPanel talConfigPanel, Weapon chosenWpn, BuildDisplayPanel displayPanel) {
+	public BuildOptionsPanel(Font mhFont, String[] armorpools, UiAssembly uiA, ConfigurationPanel wlConfigPanel, ConfigurationPanel talConfigPanel, Weapon chosenWpn, BuildDisplayPanel displayPanel, JFrame parentFrame) {
 		this.setUiA(uiA);
 		this.wlConfigPanel = wlConfigPanel;
 		this.talConfigPanel = talConfigPanel;
@@ -79,7 +81,7 @@ public class BuildOptionsPanel extends JPanel{
 		this.optionsFont = mhFont;
 		this.boxSize = new Dimension(150, 15);
 		this.wlArray = new ArrayList<Wishlist>();
-		
+		this.parentFrame = parentFrame;
 		
 		this.fL = new FlowLayout(FlowLayout.CENTER, 10, 0);
 		this.setLayout(fL);
@@ -224,5 +226,11 @@ public class BuildOptionsPanel extends JPanel{
 	}
 	public void setDisplayPanel(BuildDisplayPanel displayPanel) {
 		this.displayPanel = displayPanel;
+	}
+	public JFrame getParentFrame() {
+		return parentFrame;
+	}
+	public void setParentFrame(JFrame parentFrame) {
+		this.parentFrame = parentFrame;
 	}
 }

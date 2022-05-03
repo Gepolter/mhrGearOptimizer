@@ -2,11 +2,13 @@ package UI;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
@@ -276,7 +278,7 @@ public class Listener implements ActionListener {
 					
 					//display results in buildPanel
 					this.bOP.getDisplayPanel().displayBuild(newBuild);
-						
+					//this.bOP.getParentFrame().pack();
 					break;
 				////////////////////////////////////////////////////////////////////////////////////////////	
 				default:

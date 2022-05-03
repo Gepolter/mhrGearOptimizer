@@ -16,6 +16,7 @@ import java.awt.font.LineMetrics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -38,16 +39,16 @@ public class CollapsiblePanel extends JPanel {
     JPanel contentPanel;
     HeaderPanel headerPanel;
     Listener closeListener;
-    ConfigurationPanel parent;
+    ConfigurationPanel configParent;
     //Split Content
-    JPanel cHeader;
+    private JPanel cHeader;
     JPanel cMain;
     JPanel cEnd;
     
     //drag Content
     MouseDragAdapter mda;
     
-    public CollapsiblePanel(String text, Font panelFont, ConfigurationPanel parent) {
+    public CollapsiblePanel(String text, Font panelFont, ConfigurationPanel configParent) {
     	this.closeListener = new Listener(this);
     	
     	//this.customizeComp(this);
@@ -55,12 +56,17 @@ public class CollapsiblePanel extends JPanel {
     	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBackground(Color.DARK_GRAY);
         this.setForeground(Color.WHITE);
-    	
-        this.parent = parent;
+    	this.setAlignmentY(TOP_ALIGNMENT);
+    	this.setAlignmentX(LEFT_ALIGNMENT);
+        this.configParent = configParent;
         
-    	this.cHeader = new JPanel();
+    	this.setcHeader(new JPanel());
+    	getcHeader().setAlignmentY(TOP_ALIGNMENT);
     	this.cMain = new JPanel();
+    	cMain.setAlignmentY(TOP_ALIGNMENT);
     	this.cEnd = new JPanel();
+    	cEnd.setAlignmentY(TOP_ALIGNMENT);
+    	
     	
         this.selected = true;
         headerPanel = new HeaderPanel(text, panelFont, this);
@@ -78,8 +84,12 @@ public class CollapsiblePanel extends JPanel {
         //split content into cHeader, Content, and cEnd
 		//Top
         
-		this.customizeComp(cHeader);
-		this.contentPanel.add(cHeader);
+        getcHeader().setBackground(Color.DARK_GRAY);
+        getcHeader().setForeground(Color.WHITE);
+        getcHeader().setAlignmentX(LEFT_ALIGNMENT);
+        getcHeader().setAlignmentY(TOP_ALIGNMENT);
+    	
+		this.contentPanel.add(getcHeader());
         
 		//Middle
 		this.customizeComp(cMain);
@@ -91,6 +101,7 @@ public class CollapsiblePanel extends JPanel {
 		cMain.addMouseMotionListener(mda);
 		//customise scrollpane
 		JScrollPane mainPane = new JScrollPane(cMain, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		//mainPane.setAlignmentY(TOP_ALIGNMENT);
 		Dimension dPane = new Dimension(10, Integer.MAX_VALUE);
 		mainPane.getVerticalScrollBar().setPreferredSize(dPane);
 		mainPane.getVerticalScrollBar().setMaximumSize(dPane);
@@ -115,6 +126,7 @@ public class CollapsiblePanel extends JPanel {
         
         this.add(headerPanel);
         this.add(contentPanel);
+       
         contentPanel.setVisible(true);
     }
     
@@ -134,12 +146,7 @@ public class CollapsiblePanel extends JPanel {
                         
             this.setBackground(Color.DARK_GRAY);
     		this.setAlignmentX(LEFT_ALIGNMENT);
-    		this.setAlignmentY(TOP_ALIGNMENT);
-    		Dimension d = new Dimension(265, 40);
-    		this.setPreferredSize(d);
-    		this.setMinimumSize(d);
-    		this.setMaximumSize(d);
-    		
+    		this.setAlignmentY(TOP_ALIGNMENT);    		
     		
     		JLabel header = new JLabel(text, JLabel.LEFT);
     		header.setForeground(Color.WHITE);
@@ -156,6 +163,7 @@ public class CollapsiblePanel extends JPanel {
     		nameField.setAlignmentX(LEFT_ALIGNMENT);
     		nameField.setAlignmentY(TOP_ALIGNMENT);
     		Dimension dHeader = new Dimension(120, 25);
+    		//Dimension dHeader = new Dimension(configParent.getWidth(), 25);
     		nameField.setPreferredSize(dHeader);
     		nameField.setMinimumSize(dHeader);
     		nameField.setMaximumSize(dHeader);
@@ -180,27 +188,6 @@ public class CollapsiblePanel extends JPanel {
  
         }
  
-        /*
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            int h = getHeight();
-            /*if (selected)
-                g2.drawImage(open, PAD, 0, h, h, this);
-            else
-                g2.drawImage(closed, PAD, 0, h, h, this);
-                         // Uncomment once you have your own images
-            g2.setFont(font);
-            FontRenderContext frc = g2.getFontRenderContext();
-            LineMetrics lm = font.getLineMetrics(text_, frc);
-            float height = lm.getAscent() + lm.getDescent();
-            float x = OFFSET;
-            float y = (h + height) / 2 - lm.getDescent();
-            g2.drawString(text_, x, y);
-        }
-    	*/
  
         public void mouseClicked(MouseEvent e) {
             toggleSelection();
@@ -232,7 +219,7 @@ public class CollapsiblePanel extends JPanel {
     	this.cMain.remove(oldContent);
     }
     public void addcHeader(JPanel newContent) {
-    	this.cHeader.add(newContent);
+    	this.getcHeader().add(newContent);
     }
     public void addcEnd(JPanel newContent) {
     	this.cEnd.add(newContent);
@@ -245,7 +232,7 @@ public class CollapsiblePanel extends JPanel {
     }
     public void callResetPrios() {
     	//how to get adapter to call this?
-    	this.parent.resetPrios(this);
+    	this.configParent.resetPrios(this);
     }
     
     
@@ -259,7 +246,7 @@ public class CollapsiblePanel extends JPanel {
             contentPanel.setVisible(true);
         */
     	
-    	this.parent.deselectCollapsiblePanels();
+    	this.configParent.deselectCollapsiblePanels();
     	this.selectPanel();
     	
         validate();
@@ -287,10 +274,17 @@ public class CollapsiblePanel extends JPanel {
     	comp.setAlignmentY(TOP_ALIGNMENT);
     	
     	comp.setLayout(new BoxLayout(comp, BoxLayout.Y_AXIS));
+    	//Dimension d = new Dimension(230, Integer.MAX_VALUE);
+    	Dimension d = new Dimension(this.configParent.getPreferredSize().width, Integer.MAX_VALUE);
     	
-    	Dimension d = new Dimension(230, Integer.MAX_VALUE);
     	comp.setMaximumSize(d);    
     	
-    	comp.revalidate();
+    	//comp.revalidate();
     }
+	public JPanel getcHeader() {
+		return cHeader;
+	}
+	public void setcHeader(JPanel cHeader) {
+		this.cHeader = cHeader;
+	}
 }

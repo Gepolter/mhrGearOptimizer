@@ -31,7 +31,7 @@ public class UiFrame extends JFrame{
 		baseLayout = new GridBagLayout();
 		this.setLayout(baseLayout);
 		
-		this.setSize(1100,600);
+		this.setSize(1200,600);
 		this.setVisible(true);
 		
 		//btnListener test

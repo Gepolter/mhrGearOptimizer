@@ -71,7 +71,7 @@ public class UiAssembly {
 		//Frame
 		bl = new Listener(this);
 		baseFrame = new UiFrame();
-		//baseFrame.setUiListener(bl);
+		baseFrame.setUiListener(bl);
 		
 		//Components
 		wtPanel = new WpnTalPanel(allWpnNames, mhFont, allSkillNames, allSkill, armorPools);
@@ -113,11 +113,11 @@ public class UiAssembly {
 		
 		String optionStr = "wl";
 		configPanelWl = new ConfigurationPanel(allSkillNames, allSkill, bop, mhFont, optionStr);
-		baseFrame.addComponent(configPanelWl, 2, 0, 1, 3, GridBagConstraints.EAST, GridBagConstraints.VERTICAL);
+		baseFrame.addComponent(configPanelWl, 2, 0, 1, 3, GridBagConstraints.NORTH, GridBagConstraints.VERTICAL);
 		
 		optionStr = "tal";
 		configPanelTal = new ConfigurationPanel(allSkillNames, allSkill, bop, mhFont, optionStr);
-		baseFrame.addComponent(configPanelTal, 3, 0, 1, 3, GridBagConstraints.EAST, GridBagConstraints.VERTICAL);
+		baseFrame.addComponent(configPanelTal, 3, 0, 1, 3, GridBagConstraints.NORTH, GridBagConstraints.VERTICAL);
 		
 		bop.setWlConfigPanel(configPanelWl);
 		bop.setTalConfigPanel(configPanelTal);

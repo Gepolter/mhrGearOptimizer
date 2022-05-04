@@ -87,7 +87,8 @@ public class ConfigurationPanel extends JPanel{
 	//one constructor for tal and wl panels. Differences filtered with if stmnts
 	public ConfigurationPanel (String[] allSkillNames, Skill[] allSkill, BuildOptionsPanel bop, Font panelFont, String optionStr) {
 		this.setOptionStr(optionStr);
-		Border blackline = BorderFactory.createEtchedBorder(Color.GREEN, Color.BLUE);
+		Border blackline = BorderFactory.createEtchedBorder(Color.BLACK, Color.GRAY);
+		//Border blackline = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY), BorderFactory.createLoweredBevelBorder());
 		this.setBorder(blackline);
 		
 		if(optionStr == "wl") {
@@ -249,7 +250,7 @@ public class ConfigurationPanel extends JPanel{
 			this.selectionPanel.setAlignmentX(LEFT_ALIGNMENT);
 			this.selectionPanel.setAlignmentY(TOP_ALIGNMENT);
 			this.add(this.selectionPanel);
-			
+			this.selectionPanel.setBorder(blackline);
 			
 			JButton wlConfirmBtn = new JButton("Update Talismans");
 			wlConfirmBtn.setFont(panelFont);
@@ -365,6 +366,7 @@ public class ConfigurationPanel extends JPanel{
 		
 		CollapsiblePanel i = new CollapsiblePanel("Tal " + (this.collapsiblePanelList.size() + 1), this.panelFont, this);
 		TalSlotLvlPanel btnPanel = new TalSlotLvlPanel();
+
 		i.addcHeader(btnPanel);
 		//list for every collapsible panel to store buttons
 		this.SlotLvlPanelList.add(btnPanel);
@@ -373,7 +375,12 @@ public class ConfigurationPanel extends JPanel{
 		collapsiblePanelList.add(i);
 		
 		//TODO resize width
-		i.getcHeader().setPreferredSize(new Dimension(wlWidth, 100));
+		i.getcHeader().setPreferredSize(new Dimension(talWidth, 80));
+		i.getcHeader().setMaximumSize(new Dimension(talWidth, 80));
+
+		//i.setPreferredSize(new Dimension(talWidth, 80));
+		i.setMaximumSize(new Dimension(talWidth, Integer.MAX_VALUE));
+		
 		//add corresponding overview stack to each configPanel
 		this.overviewSetList.add(new ArrayList<OverviewSet>());
 		this.overviewPanel.add(i);
@@ -486,6 +493,7 @@ public class ConfigurationPanel extends JPanel{
 		
 		public TalSlotLvlPanel() {
 			this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+			//this.setLayout(new FlowLayout(FlowLayout.CENTER));
 			this.customizeComp(this);
 			
 			
@@ -511,8 +519,8 @@ public class ConfigurationPanel extends JPanel{
 			
 			
 			//TODO track state of buttons somewhere
-			this.setPreferredSize(new Dimension(talWidth, Integer.MAX_VALUE));			
-			this.setMaximumSize(new Dimension(talWidth, Integer.MAX_VALUE));
+			this.setPreferredSize(new Dimension(talWidth-5, 30));			
+			this.setMaximumSize(new Dimension(talWidth-5, 30));
 			
 			Border blackline = BorderFactory.createEtchedBorder();	
 			
@@ -696,9 +704,16 @@ public class ConfigurationPanel extends JPanel{
 				this.setMinimumSize(new Dimension(width, 40));			
 				this.setMaximumSize(new Dimension(width, 40));
 			}else if(this.optionStr == "tal") {
-				this.setPreferredSize(new Dimension(185, 40));
-				this.setMinimumSize(new Dimension(185, 40));			
-				this.setMaximumSize(new Dimension(185, 40));
+				/*
+				this.setPreferredSize(this.owner.getPreferredSize());
+				this.setMinimumSize(this.owner.getPreferredSize());			
+				this.setMaximumSize(this.owner.getPreferredSize());
+				*/
+				int width = talWidth - 35;
+				this.setPreferredSize(new Dimension(width, 40));
+				this.setMinimumSize(new Dimension(width, 40));			
+				this.setMaximumSize(new Dimension(width, 40));
+				
 			}			
 		}
 		//header constructor
@@ -746,14 +761,20 @@ public class ConfigurationPanel extends JPanel{
 			
 			if (this.optionStr =="wl") {
 				//this.add(Box.createHorizontalStrut(55));				
-				Dimension wlD = new Dimension(185,40);
+				Dimension wlD = new Dimension(wlWidth, 40);
 				this.setPreferredSize(wlD);
 				this.setMinimumSize(wlD);			
 				this.setMaximumSize(wlD);
 			}else if(this.optionStr == "tal") {
+				/*
 				this.setPreferredSize(new Dimension(185, 40));
 				this.setMinimumSize(new Dimension(185, 40));			
 				this.setMaximumSize(new Dimension(185, 40));
+				*/
+				int width = talWidth;
+				this.setPreferredSize(new Dimension(width, 40));
+				this.setMinimumSize(new Dimension(width, 40));			
+				this.setMaximumSize(new Dimension(width, 40));
 			}
 			
 		}

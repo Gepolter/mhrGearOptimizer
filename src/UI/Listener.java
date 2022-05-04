@@ -221,18 +221,13 @@ public class Listener implements ActionListener {
 							if(this.configPanel.getCollapsiblePanelList().get(i).getNameField().getText().isEmpty()) {
 								emptyWlExists = true;
 							}else {
-								//?
+								//? messagebox "name all given wishlists"
 							}
 							
 						}
 						if (emptyWlExists == false) {
 							this.configPanel.newWlPanel();							
 						}
-						
-						
-						
-						
-						//add wl to combobox
 					}
 					break;
 					
@@ -250,18 +245,12 @@ public class Listener implements ActionListener {
 							if(this.configPanel.getCollapsiblePanelList().get(i).getNameField().getText().isEmpty()) {
 								emptyTalExists = true;
 							}else {
-								//?
-							}
-							
+								//? messagebox "name all talismans"
+							}	
 						}
 						if (emptyTalExists == false) {
 							this.configPanel.newTalPanel();							
 						}
-						
-						
-						
-						
-						//add wl to combobox
 					}
 					break;
 				

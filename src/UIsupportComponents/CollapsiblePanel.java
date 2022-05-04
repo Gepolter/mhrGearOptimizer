@@ -60,8 +60,8 @@ public class CollapsiblePanel extends JPanel {
     	this.setAlignmentX(LEFT_ALIGNMENT);
         this.configParent = configParent;
         
-    	this.setcHeader(new JPanel());
-    	getcHeader().setAlignmentY(TOP_ALIGNMENT);
+    	this.cHeader = new JPanel();
+    	cHeader.setAlignmentY(TOP_ALIGNMENT);
     	this.cMain = new JPanel();
     	cMain.setAlignmentY(TOP_ALIGNMENT);
     	this.cEnd = new JPanel();
@@ -79,17 +79,19 @@ public class CollapsiblePanel extends JPanel {
         
         contentPanel = new JPanel();
         this.customizeComp(contentPanel);
-       
+        
+        
        
         //split content into cHeader, Content, and cEnd
 		//Top
         
-        getcHeader().setBackground(Color.DARK_GRAY);
-        getcHeader().setForeground(Color.WHITE);
-        getcHeader().setAlignmentX(LEFT_ALIGNMENT);
-        getcHeader().setAlignmentY(TOP_ALIGNMENT);
-    	
-		this.contentPanel.add(getcHeader());
+        cHeader.setBackground(Color.DARK_GRAY);
+        cHeader.setForeground(Color.WHITE);
+        cHeader.setAlignmentX(LEFT_ALIGNMENT);
+        cHeader.setAlignmentY(TOP_ALIGNMENT);
+        cHeader.setLayout(new BoxLayout(cHeader, BoxLayout.Y_AXIS));
+    	//this.customizeComp(cHeader);
+		this.contentPanel.add(cHeader);
         
 		//Middle
 		this.customizeComp(cMain);
@@ -127,6 +129,11 @@ public class CollapsiblePanel extends JPanel {
         this.add(headerPanel);
         this.add(contentPanel);
        
+       /*
+        Dimension d = new Dimension(this.configParent.getPreferredSize().width, Integer.MAX_VALUE);
+    	this.setPreferredSize(d);
+    	this.setMaximumSize(d);    
+        */
         contentPanel.setVisible(true);
     }
     
@@ -219,7 +226,7 @@ public class CollapsiblePanel extends JPanel {
     	this.cMain.remove(oldContent);
     }
     public void addcHeader(JPanel newContent) {
-    	this.getcHeader().add(newContent);
+    	this.cHeader.add(newContent);
     }
     public void addcEnd(JPanel newContent) {
     	this.cEnd.add(newContent);
@@ -276,7 +283,7 @@ public class CollapsiblePanel extends JPanel {
     	comp.setLayout(new BoxLayout(comp, BoxLayout.Y_AXIS));
     	//Dimension d = new Dimension(230, Integer.MAX_VALUE);
     	Dimension d = new Dimension(this.configParent.getPreferredSize().width, Integer.MAX_VALUE);
-    	
+    	comp.setPreferredSize(d);
     	comp.setMaximumSize(d);    
     	
     	//comp.revalidate();

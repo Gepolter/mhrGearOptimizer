@@ -37,7 +37,7 @@ public class CollapsiblePanel extends JPanel {
 
 	private boolean selected;
     JPanel contentPanel;
-    HeaderPanel headerPanel;
+    private HeaderPanel headerPanel;
     Listener closeListener;
     ConfigurationPanel configParent;
     //Split Content
@@ -69,16 +69,18 @@ public class CollapsiblePanel extends JPanel {
     	
     	
         this.selected = true;
-        headerPanel = new HeaderPanel(text, panelFont, this);
+        setHeaderPanel(new HeaderPanel(text, panelFont, this));
         //this.customizeComp(headerPanel);
-        this.headerPanel.setAlignmentX(LEFT_ALIGNMENT);
-		this.headerPanel.setAlignmentY(TOP_ALIGNMENT);       
+        this.getHeaderPanel().setAlignmentX(LEFT_ALIGNMENT);
+		this.getHeaderPanel().setAlignmentY(TOP_ALIGNMENT);       
         
         Border headerBorder = BorderFactory.createEtchedBorder();
-        this.headerPanel.setBorder(headerBorder);
+        this.getHeaderPanel().setBorder(headerBorder);
         
         contentPanel = new JPanel();
         this.customizeComp(contentPanel);
+        Dimension d = new Dimension(this.configParent.getPreferredSize().width, 500);
+        contentPanel.setPreferredSize(d);
         
         
        
@@ -126,7 +128,7 @@ public class CollapsiblePanel extends JPanel {
 		this.contentPanel.add(cEnd);
         
         
-        this.add(headerPanel);
+        this.add(getHeaderPanel());
         this.add(contentPanel);
        
        /*
@@ -139,7 +141,7 @@ public class CollapsiblePanel extends JPanel {
     
     
     //nested classes for header and content panels
-    private class HeaderPanel extends JPanel implements MouseListener {
+    public class HeaderPanel extends JPanel implements MouseListener {
  
 		private JSeparator sep;
     	JTextField nameField;
@@ -176,6 +178,7 @@ public class CollapsiblePanel extends JPanel {
     		nameField.setMaximumSize(dHeader);
     		//nameField.addActionListener(wlListener);
     		this.add(nameField);
+    		
     		
     		
     		JButton close = new JButton("x");
@@ -235,7 +238,7 @@ public class CollapsiblePanel extends JPanel {
     	return this.closeListener;
     }
     public JTextField getNameField() {
-    	return this.headerPanel.getNameField();
+    	return this.getHeaderPanel().getNameField();
     }
     public void callResetPrios() {
     	//how to get adapter to call this?
@@ -258,7 +261,7 @@ public class CollapsiblePanel extends JPanel {
     	
         validate();
  
-        headerPanel.repaint();
+        getHeaderPanel().repaint();
     }
     public void deselectPanel() {
     	selected = false;
@@ -283,15 +286,22 @@ public class CollapsiblePanel extends JPanel {
     	comp.setLayout(new BoxLayout(comp, BoxLayout.Y_AXIS));
     	//Dimension d = new Dimension(230, Integer.MAX_VALUE);
     	Dimension d = new Dimension(this.configParent.getPreferredSize().width, Integer.MAX_VALUE);
-    	comp.setPreferredSize(d);
+    	//comp.setPreferredSize(d);
     	comp.setMaximumSize(d);    
     	
-    	//comp.revalidate();
     }
+    
+    
 	public JPanel getcHeader() {
 		return cHeader;
 	}
 	public void setcHeader(JPanel cHeader) {
 		this.cHeader = cHeader;
+	}
+	public HeaderPanel getHeaderPanel() {
+		return headerPanel;
+	}
+	public void setHeaderPanel(HeaderPanel headerPanel) {
+		this.headerPanel = headerPanel;
 	}
 }

@@ -377,8 +377,15 @@ public class ConfigurationPanel extends JPanel{
 		//TODO resize width
 		i.getcHeader().setPreferredSize(new Dimension(talWidth, 80));
 		i.getcHeader().setMaximumSize(new Dimension(talWidth, 80));
-
-		//i.setPreferredSize(new Dimension(talWidth, 80));
+		
+	
+		Dimension headerDim = new Dimension(this.talWidth, 50);
+		i.getHeaderPanel().setPreferredSize(headerDim);
+		i.getHeaderPanel().setMinimumSize(headerDim);
+		//i.getHeaderPanel().setMaximumSize(headerDim);
+		 
+		
+		//i.setPreferredSize(new Dimension(talWidth, 20));
 		i.setMaximumSize(new Dimension(talWidth, Integer.MAX_VALUE));
 		
 		//add corresponding overview stack to each configPanel

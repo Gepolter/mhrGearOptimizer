@@ -347,11 +347,11 @@ public class BuildDisplayPanel extends JPanel{
 	}
 	
 	public void changeColumnWidth(int x, Dimension d) {
+		//this shrinks somehow TODO
 		int previousColumnWidth = this.grid.get(0).get(x).getWidth();
 		for(int i = 0; i < this.yAxis; i++) {
 			this.grid.get(i).get(x).setPreferredSize(d);
 			this.grid.get(i).get(x).setMinimumSize(d);
-			
 		}
 		this.trackDisplayWidth(previousColumnWidth, d.width);
 	}

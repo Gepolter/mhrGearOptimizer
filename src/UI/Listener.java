@@ -265,9 +265,17 @@ public class Listener implements ActionListener {
 						}
 					}
 					
+					//get display panel width before change
+					int previousWidth = this.bOP.getDisplayPanel().getDisplayWidth();
+					
 					//display results in buildPanel
 					this.bOP.getDisplayPanel().displayBuild(newBuild);
-					//this.bOP.getParentFrame().pack();
+					//get display panel width after change and store difference in variable
+					int currentWidth = this.bOP.getDisplayPanel().getDisplayWidth();
+					int diffWidth = currentWidth - previousWidth;
+					//call frame to adjust width according to display panel size change
+					this.bOP.getParentFrame().setSize(this.bOP.getParentFrame().getWidth() + diffWidth, this.bOP.getParent().getHeight());
+					
 					break;
 				////////////////////////////////////////////////////////////////////////////////////////////	
 				default:

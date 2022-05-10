@@ -3,6 +3,7 @@ package UI;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,6 +33,8 @@ public class UiFrame extends JFrame{
 		this.setLayout(baseLayout);
 		
 		this.setSize(1200,600);
+		//set minimumSize according to the 2 ConfigPanels (240,220) and the buildOptionsPanel(720)
+		this.setMinimumSize(new Dimension(1180, 600));
 		this.setVisible(true);
 		
 		//btnListener test

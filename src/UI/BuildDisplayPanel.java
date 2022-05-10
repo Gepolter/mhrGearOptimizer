@@ -50,6 +50,7 @@ public class BuildDisplayPanel extends JPanel{
 	private Dimension secondColSize;
 	
 	private Build displayBuild;
+	private int displayWidth;
 	
 	public BuildDisplayPanel(String[] allWpnNames, String[] allArmorNames, String[]selectedTalNames, Font mhFont) {
 		
@@ -97,7 +98,8 @@ public class BuildDisplayPanel extends JPanel{
 					//this.grid.get(i).get(j).setMinimumSize(secondColSize);
 				}else {
 					this.grid.get(i).get(j).setPreferredSize(defaultSize);
-					this.grid.get(i).get(j).setMinimumSize(defaultSize);					
+					this.grid.get(i).get(j).setMinimumSize(defaultSize);		
+					if(i == 2) this.trackDisplayWidth(0, defaultSize.width);
 				}
 				
 				//add panel to frame
@@ -194,30 +196,54 @@ public class BuildDisplayPanel extends JPanel{
 			this.grid.get(y).get(x).setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY), BorderFactory.createLoweredBevelBorder()));
 		}
 		
-		//contentLabel.setAlignmentY(TOP_ALIGNMENT);
 		
-		//resize label column if new content exceeds current size		
-		
-		//this.grid.get(y).get(x).setAlignmentY(TOP_ALIGNMENT);
 		
 		//check for size and 0, bc the preferredSize of Labels seems to initialize when beeing drawn. seems weird though.
 		//add buffer 
 		int buffer = 10;
-		if(contentLabel.getPreferredSize().getWidth() + 10 > this.grid.get(y).get(x).getSize().getWidth() && this.grid.get(y).get(x).getSize().getWidth() != 0) {
+		Dimension bufferedDim = new Dimension((int) contentLabel.getPreferredSize().getWidth() + 10, 20/*(int)contentLabel.getPreferredSize().getHeight() + 10*/);
+		//check, if this is primary filling of table
+		if(this.grid.get(y).get(x).getSize().getWidth() != 0) {
+			//checks if this resize is in first column. it's rows can vary and have to be sized after the widest component in this column
+			if(x == 0) {
+				//loop over all rows of first col. get biggest min width. if this labels width is bigger, or active label was biggest(maybe shrink) -> resize
+				int biggestSmallest = 0;
+				int rowCounter = 0;
+				for(int i = 0; i < yAxis; i++) {
+					if (this.grid.get(i).get(0).getMinimumSize().width > biggestSmallest) {
+						biggestSmallest = this.grid.get(i).get(0).getMinimumSize().width;
+						rowCounter = i;
+					}
+					if(bufferedDim.getWidth() > biggestSmallest && rowCounter == y) {
+						//contentLabel.setMinimumSize(bufferedDim);
+						this.changeColumnWidth(x, bufferedDim);
+					}
+				}
+			}
+			//check if this resize is in 2nd row. these display the gearNames and have to resize the whole column no matter the width
+			if(y == 1) {
+				contentLabel.setMinimumSize(bufferedDim);
+				this.changeColumnWidth(x, bufferedDim);
+			}
+		}
+		
+		/*
+		if(bufferedDim.getWidth() > this.grid.get(y).get(x).getSize().getWidth() && this.grid.get(y).get(x).getSize().getWidth() != 0) {
 			
-			Dimension bufferedDim = new Dimension((int) contentLabel.getPreferredSize().getWidth() + 10, 20/*(int)contentLabel.getPreferredSize().getHeight() + 10*/);
 			contentLabel.setMinimumSize(bufferedDim);
 			
 			//this.grid.get(y).get(x).setPreferredSize(contentLabel.getMinimumSize());			
 			//this.grid.get(y).get(x).setMinimumSize(contentLabel.getMinimumSize());
 			this.changeColumnWidth(x, bufferedDim);
-			
-			
+		
+		}else if(bufferedDim.getWidth() < this.grid.get(y).get(x).getSize().getWidth() && this.grid.get(y).get(x).getSize().getWidth() != 0) {
+			//contentLabel.setMinimumSize(bufferedDim);
+			//this.changeColumnWidth(x, bufferedDim);
 		}else {
-			contentLabel.setMinimumSize(this.grid.get(y).get(x).getMinimumSize());
+			//contentLabel.setMinimumSize(this.grid.get(y).get(x).getMinimumSize());
 			
 		}
-		
+		*/
 		this.grid.get(y).get(x).add(contentLabel, BorderLayout.CENTER);
 		
 		this.grid.get(y).get(x).repaint();
@@ -321,10 +347,25 @@ public class BuildDisplayPanel extends JPanel{
 	}
 	
 	public void changeColumnWidth(int x, Dimension d) {
+		int previousColumnWidth = this.grid.get(0).get(x).getWidth();
 		for(int i = 0; i < this.yAxis; i++) {
 			this.grid.get(i).get(x).setPreferredSize(d);
 			this.grid.get(i).get(x).setMinimumSize(d);
-
+			
 		}
+		this.trackDisplayWidth(previousColumnWidth, d.width);
+	}
+	public void trackDisplayWidth (int previousColumnWidth, int changedColumnWidth) {
+		displayWidth += (changedColumnWidth - previousColumnWidth);
+	}
+
+
+	public int getDisplayWidth() {
+		return displayWidth;
+	}
+
+
+	public void setDisplayWidth(int displayWidth) {
+		this.displayWidth = displayWidth;
 	}
 }
